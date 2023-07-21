@@ -12,7 +12,7 @@ def get_readme():
 
 def get_version_info():
 
-    version_path = os.path.join("plemmy", "version.py")
+    version_path = os.path.join("aioplemmy", "version.py")
     file_vars = {}
     with open(version_path, "r") as f:
         exec(f.read(), file_vars)
@@ -24,7 +24,7 @@ VERSION = get_version_info()
 
 
 setuptools.setup(
-    name="plemmy-aio",
+    name="aioplemmy",
     version=VERSION,
     description="Python API for LemmyHttp",
     long_description=get_readme(),
@@ -33,7 +33,7 @@ setuptools.setup(
     author="Travis Kessler",
     author_email="travis.j.kessler@gmail.com",
     license="Apache License 2.0",
-    packages=["plemmy"],
+    packages=["aioplemmy"],
     install_requires=[
         "orjson==3.9.2",
         "aiohttp==3.8.5"
