@@ -1,11 +1,11 @@
-from .objects import AdminPurgeComment, AdminPurgeCommunity,\
-    AdminPurgePerson, AdminPurgePost, Comment, CommentAggregates,\
-    CommentReply, CommentReport, Community, CommunityAggregates, CustomEmoji,\
-    CustomEmojiKeyword, Instance, LocalSite, LocalSiteRateLimit, LocalUser,\
-    ModAdd, ModAddCommunity, ModBan, ModBanFromCommunity, ModFeaturePost,\
-    ModHideCommunity, ModLockPost, ModRemoveComment, ModRemoveCommunity,\
-    ModRemovePost, ModTransferCommunity, Person, PersonAggregates,\
-    PersonMention, Post, PostAggregates, PostReport, PrivateMessage,\
+from .objects import AdminPurgeComment, AdminPurgeCommunity, \
+    AdminPurgePerson, AdminPurgePost, Comment, CommentAggregates, \
+    CommentReply, CommentReport, Community, CommunityAggregates, CustomEmoji, \
+    CustomEmojiKeyword, Instance, LocalSite, LocalSiteRateLimit, LocalUser, \
+    ModAdd, ModAddCommunity, ModBan, ModBanFromCommunity, ModFeaturePost, \
+    ModHideCommunity, ModLockPost, ModRemoveComment, ModRemoveCommunity, \
+    ModRemovePost, ModTransferCommunity, Person, PersonAggregates, \
+    PersonMention, Post, PostAggregates, PostReport, PrivateMessage, \
     PrivateMessageReport, RegistrationApplication, Site, SiteAggregates
 
 
@@ -15,17 +15,14 @@ class ViewObject(object):
     def __init__(self, view: dict) -> None:
 
         self._view = view
-        self.parse()
-
-    def parse(self) -> None:
-
-        return
 
 
 class AdminPurgeCommentView(ViewObject):
     """https://join-lemmy.org/api/interfaces/AdminPurgeCommentView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         if "admin" in self._view.keys():
             self.admin = Person(**self._view["admin"])
@@ -40,7 +37,9 @@ class AdminPurgeCommentView(ViewObject):
 class AdminPurgeCommunityView(ViewObject):
     """https://join-lemmy.org/api/interfaces/AdminPurgeCommunityView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         if "admin" in self._view.keys():
             self.admin = Person(**self._view["admin"])
@@ -54,7 +53,9 @@ class AdminPurgeCommunityView(ViewObject):
 class AdminPurgePersonView(ViewObject):
     """https://join-lemmy.org/api/interfaces/AdminPurgePersonView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         if "admin" in self._view.keys():
             self.admin = Person(**self._view["admin"])
@@ -68,7 +69,9 @@ class AdminPurgePersonView(ViewObject):
 class AdminPurgePostView(ViewObject):
     """https://join-lemmy.org/api/interfaces/AdminPurgePostView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         if "admin" in self._view.keys():
             self.admin = Person(**self._view["admin"])
@@ -81,7 +84,9 @@ class AdminPurgePostView(ViewObject):
 class CommentReplyView(ViewObject):
     """https://join-lemmy.org/api/interfaces/CommentReplyView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.comment = Comment(**self._view["comment"])
         self.comment_reply = CommentReply(**self._view["comment_reply"])
@@ -105,7 +110,9 @@ class CommentReplyView(ViewObject):
 class CommentReportView(ViewObject):
     """https://join-lemmy.org/api/interfaces/CommentReportView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.comment = Comment(**self._view["comment"])
         self.comment_creator = Person(**self._view["comment_creator"])
@@ -130,7 +137,9 @@ class CommentReportView(ViewObject):
 class CommentView(ViewObject):
     """https://join-lemmy.org/api/interfaces/CommentView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.comment = Comment(**self._view["comment"])
         self.community = Community(**self._view["community"])
@@ -152,7 +161,9 @@ class CommentView(ViewObject):
 class CommunityModeratorView(ViewObject):
     """https://join-lemmy.org/api/interfaces/CommunityModeratorView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.community = Community(**self._view["community"])
         self.moderator = Person(**self._view["moderator"])
@@ -161,7 +172,9 @@ class CommunityModeratorView(ViewObject):
 class CommunityView(ViewObject):
     """https://join-lemmy.org/api/interfaces/CommunityView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.blocked = self._view["blocked"]
         self.community = Community(**self._view["community"])
@@ -172,7 +185,9 @@ class CommunityView(ViewObject):
 class CustomEmojiView(ViewObject):
     """https://join-lemmy.org/api/interfaces/CustomEmojiView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.custom_emoji = CustomEmoji(**self._view["custom_emoji"])
         self.keywords = CustomEmojiKeyword(**self._view["keywords"])
@@ -181,7 +196,9 @@ class CustomEmojiView(ViewObject):
 class FederatedInstances(ViewObject):
     """https://join-lemmy.org/api/interfaces/FederatedInstances.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.allowed = [Instance(**i) for i in self._view["allowed"]]
         self.blocked = [Instance(**i) for i in self._view["blocked"]]
@@ -191,7 +208,9 @@ class FederatedInstances(ViewObject):
 class ModAddCommunityView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModAddCommunityView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.community = Community(**self._view["community"])
         self.mod_add_community = ModAddCommunity(
@@ -207,7 +226,9 @@ class ModAddCommunityView(ViewObject):
 class ModAddView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModAddView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.mod_add = ModAdd(**self._view["mod_add"])
         self.modded_person = Person(**self._view["modded_person"])
@@ -220,7 +241,9 @@ class ModAddView(ViewObject):
 class ModBanFromCommunityView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModBanFromCommunityView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.banned_person = Person(**self._view["banned_person"])
         self.community = Community(**self._view["community"])
@@ -236,7 +259,9 @@ class ModBanFromCommunityView(ViewObject):
 class ModBanView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModBanView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.banned_person = Person(**self._view["banned_person"])
         self.mod_ban = ModBan(**self._view["mod_ban"])
@@ -249,7 +274,9 @@ class ModBanView(ViewObject):
 class ModFeaturePostView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModFeaturePostView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.community = Community(**self._view["community"])
         self.mod_feature_post = ModFeaturePost(
@@ -265,7 +292,9 @@ class ModFeaturePostView(ViewObject):
 class ModHideCommunityView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModHideCommunityView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         if "admin" in self._view.keys():
             self.admin = Person(**self._view["admin"])
@@ -280,7 +309,9 @@ class ModHideCommunityView(ViewObject):
 class ModLockPostView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModLockPostView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.community = Community(**self._view["community"])
         self.mod_lock_post = ModLockPost(**self._view["mod_lock_post"])
@@ -294,7 +325,9 @@ class ModLockPostView(ViewObject):
 class ModRemoveCommentView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModRemoveCommentView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.comment = Comment(**self._view["comment"])
         self.commenter = Person(**self._view["commenter"])
@@ -312,7 +345,9 @@ class ModRemoveCommentView(ViewObject):
 class ModRemoveCommunityView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModRemoveCommunityView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.community = Community(**self._view["community"])
         self.mod_remove_community = ModRemoveCommunity(
@@ -327,7 +362,9 @@ class ModRemoveCommunityView(ViewObject):
 class ModRemovePostView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModRemovePostView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.community = Community(**self._view["community"])
         self.mod_remove_post = ModRemovePost(**self._view["mod_remove_post"])
@@ -341,7 +378,9 @@ class ModRemovePostView(ViewObject):
 class ModTransferCommunityView(ViewObject):
     """https://join-lemmy.org/api/interfaces/ModTransferCommunityView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.community = Community(**self._view["community"])
         self.mod_transfer_community = ModTransferCommunity(
@@ -357,7 +396,9 @@ class ModTransferCommunityView(ViewObject):
 class PersonMentionView(ViewObject):
     """https://join-lemmy.org/api/interfaces/PersonMentionView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.comment = Comment(**self._view["comment"])
         self.community = Community(**self._view["community"])
@@ -381,7 +422,9 @@ class PersonMentionView(ViewObject):
 class PersonView(ViewObject):
     """https://join-lemmy.org/api/interfaces/PersonView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.counts = PersonAggregates(**self._view["counts"])
         self.person = Person(**self._view["person"])
@@ -390,7 +433,9 @@ class PersonView(ViewObject):
 class PostReportView(ViewObject):
     """https://join-lemmy.org/api/interfaces/PostReportView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.community = Community(**self._view["community"])
         self.counts = PostAggregates(**self._view["counts"])
@@ -414,7 +459,9 @@ class PostReportView(ViewObject):
 class PostView(ViewObject):
     """https://join-lemmy.org/api/interfaces/PostView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.community = Community(**self._view["community"])
         self.counts = PostAggregates(**self._view["counts"])
@@ -437,7 +484,9 @@ class PostView(ViewObject):
 class PrivateMessageReportView(ViewObject):
     """https://join-lemmy.org/api/interfaces/PrivateMessageReportView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.creator = Person(**self._view["creator"])
         self.private_message = PrivateMessage(**self._view["private_message"])
@@ -456,7 +505,9 @@ class PrivateMessageReportView(ViewObject):
 class PrivateMessageView(ViewObject):
     """https://join-lemmy.org/api/interfaces/PrivateMessageView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.creator = Person(**self._view["creator"])
         self.private_message = PrivateMessage(**self._view["private_message"])
@@ -466,7 +517,9 @@ class PrivateMessageView(ViewObject):
 class RegistrationApplicationView(ViewObject):
     """https://join-lemmy.org/api/interfaces/RegistrationApplicationView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         if "admin" in self._view.keys():
             self.admin = Person(**self._view["admin"])
@@ -482,7 +535,9 @@ class RegistrationApplicationView(ViewObject):
 class SiteView(ViewObject):
     """https://join-lemmy.org/api/interfaces/SiteView.html"""
 
-    def parse(self) -> None:
+    def __init__(self, view: dict) -> None:
+
+        super().__init__(view)
 
         self.counts = SiteAggregates(**self._view["counts"])
         self.local_site = LocalSite(**self._view["local_site"])
