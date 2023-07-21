@@ -94,7 +94,7 @@ class LemmyHttp(object):
         return await self._post_handler("/admin/add", locals())
 
     async def add_mod_to_community(self, added: bool, community_id: int,
-                             person_id: int) -> dict:
+                                   person_id: int) -> dict:
         """ add_mod_to_community: adds a user to a community's mod list
 
         Args:
@@ -126,8 +126,8 @@ class LemmyHttp(object):
         return await self._put_handler("/admin/registration_application/approve", locals())
 
     async def ban_from_community(self, ban: bool, community_id: int, person_id: int,
-                           expires: int = None, reason: str = None,
-                           remove_data: bool = None) -> dict:
+                                 expires: int = None, reason: str = None,
+                                 remove_data: bool = None) -> dict:
         """ ban_from_community: bans a user from interacting with a community
 
         Args:
@@ -146,8 +146,8 @@ class LemmyHttp(object):
         return await self._post_handler("/community/ban_user", locals())
 
     async def ban_person(self, ban: bool, person_id: int,
-                   expires: int = None, reason: str = None,
-                   remove_data: bool = None) -> dict:
+                         expires: int = None, reason: str = None,
+                         remove_data: bool = None) -> dict:
         """ ban_person: bans a user from the Lemmy instance
 
         Args:
@@ -165,7 +165,7 @@ class LemmyHttp(object):
         return await self._post_handler("/user/ban", locals())
 
     async def block_community(self, block: bool,
-                        community_id: int) -> dict:
+                              community_id: int) -> dict:
         """ block_community: block a community from this Lemmy instance
 
         Args:
@@ -192,7 +192,7 @@ class LemmyHttp(object):
         return await self._post_handler("/user/block", locals())
 
     async def change_password(self, new_password: str, new_password_verify: str,
-                        old_password: str) -> dict:
+                              old_password: str) -> dict:
         """ change_password: change password for currently-logged-in user
 
         Args:
@@ -207,8 +207,8 @@ class LemmyHttp(object):
         return await self._put_handler("/user/change_password", locals())
 
     async def create_comment(self, content: str, post_id: int,
-                       form_id: str = None, language_id: int = None,
-                       parent_id: int = None) -> dict:
+                             form_id: str = None, language_id: int = None,
+                             parent_id: int = None) -> dict:
         """ create_comment: create a comment on a post
 
         Args:
@@ -226,7 +226,7 @@ class LemmyHttp(object):
         return await self._post_handler("/comment", locals())
 
     async def create_comment_report(self, comment_id: int,
-                              reason: str) -> dict:
+                                    reason: str) -> dict:
         """ create_comment_report: report a comment
 
         Args:
@@ -240,11 +240,11 @@ class LemmyHttp(object):
         return await self._post_handler("/comment/report", locals())
 
     async def create_community(self, name: str, title: str,
-                         banner: str = None, description: str = None,
-                         discussion_languages: List[int] = None,
-                         icon: str = None, nsfw: bool = None,
-                         posting_redirect_to_mods: bool = None
-                         ) -> dict:
+                               banner: str = None, description: str = None,
+                               discussion_languages: List[int] = None,
+                               icon: str = None, nsfw: bool = None,
+                               posting_redirect_to_mods: bool = None
+                               ) -> dict:
         """ create_community: create a community on this Lemmy instance
 
         Args:
@@ -266,8 +266,8 @@ class LemmyHttp(object):
         return await self._post_handler("/community", locals())
 
     async def create_custom_emoji(self, alt_text: str, category: str,
-                            image_url: str, keywords: List[str],
-                            shortcode: str) -> dict:
+                                  image_url: str, keywords: List[str],
+                                  shortcode: str) -> dict:
         """ create_custom_emoji: create custom emoji for site
 
         Args:
@@ -284,8 +284,8 @@ class LemmyHttp(object):
         return await self._post_handler("/custom_emoji", locals())
 
     async def create_post(self, community_id: int, name: str, body: str = None,
-                    honeypot: str = None, language_id: int = None,
-                    nsfw: bool = None, url: str = None) -> dict:
+                          honeypot: str = None, language_id: int = None,
+                          nsfw: bool = None, url: str = None) -> dict:
         """ create_post: create a post in a community
 
         Args:
@@ -304,7 +304,7 @@ class LemmyHttp(object):
         return await self._post_handler("/post", locals())
 
     async def create_post_report(self, post_id: int,
-                           reason: str) -> dict:
+                                 reason: str) -> dict:
         """ create_post_report: report a post
 
         Args:
@@ -318,7 +318,7 @@ class LemmyHttp(object):
         return await self._post_handler("/post/report", locals())
 
     async def create_private_message(self, content: str,
-                               recipient_id: int) -> dict:
+                                     recipient_id: int) -> dict:
         """ create_private_message: send someone a private message
 
         Args:
@@ -332,7 +332,7 @@ class LemmyHttp(object):
         return await self._post_handler("/private_message", locals())
 
     async def create_private_message_report(self, private_message_id: int,
-                                      reason: str) -> dict:
+                                            reason: str) -> dict:
         """ create_private_message_report: report a private message
 
         Args:
@@ -346,40 +346,40 @@ class LemmyHttp(object):
         return await self._post_handler("/private_message_report", locals())
 
     async def create_site(self, name: str, actor_name_max_length: int = None,
-                    allowed_instances: List[str] = None,
-                    application_email_admins: bool = None,
-                    application_question: str = None, banner: str = None,
-                    blocked_instances: List[str] = None,
-                    captcha_difficulty: str = None,
-                    captcha_enabled: bool = None,
-                    community_creation_admin_only: bool = None,
-                    default_post_listing_type: str = None,
-                    default_theme: str = None, description: str = None,
-                    discussion_languages: List[int] = None,
-                    enable_downvotes: bool = None, enable_nsfw: bool = None,
-                    federation_debug: bool = None,
-                    federation_enabled: bool = None,
-                    federation_worker_count: int = None,
-                    hide_modlog_mod_names: bool = None, icon: str = None,
-                    legal_information: str = None,
-                    private_instance: bool = None,
-                    rate_limit_comment: int = None,
-                    rate_limit_comment_per_second: int = None,
-                    rate_limit_image: int = None,
-                    rate_limit_image_per_second: int = None,
-                    rate_limit_message: int = None,
-                    rate_limit_message_per_second: int = None,
-                    rate_limit_post: int = None,
-                    rate_limit_post_per_second: int = None,
-                    rate_limit_register: int = None,
-                    rate_limit_register_per_second: int = None,
-                    rate_limit_search: int = None,
-                    rate_limit_search_per_second: int = None,
-                    registration_mode: str = None,
-                    reports_email_admins: bool = None,
-                    require_email_verification: bool = None,
-                    sidebar: str = None, slur_filter_regex: str = None,
-                    taglines: List[str] = None) -> dict:
+                          allowed_instances: List[str] = None,
+                          application_email_admins: bool = None,
+                          application_question: str = None, banner: str = None,
+                          blocked_instances: List[str] = None,
+                          captcha_difficulty: str = None,
+                          captcha_enabled: bool = None,
+                          community_creation_admin_only: bool = None,
+                          default_post_listing_type: str = None,
+                          default_theme: str = None, description: str = None,
+                          discussion_languages: List[int] = None,
+                          enable_downvotes: bool = None, enable_nsfw: bool = None,
+                          federation_debug: bool = None,
+                          federation_enabled: bool = None,
+                          federation_worker_count: int = None,
+                          hide_modlog_mod_names: bool = None, icon: str = None,
+                          legal_information: str = None,
+                          private_instance: bool = None,
+                          rate_limit_comment: int = None,
+                          rate_limit_comment_per_second: int = None,
+                          rate_limit_image: int = None,
+                          rate_limit_image_per_second: int = None,
+                          rate_limit_message: int = None,
+                          rate_limit_message_per_second: int = None,
+                          rate_limit_post: int = None,
+                          rate_limit_post_per_second: int = None,
+                          rate_limit_register: int = None,
+                          rate_limit_register_per_second: int = None,
+                          rate_limit_search: int = None,
+                          rate_limit_search_per_second: int = None,
+                          registration_mode: str = None,
+                          reports_email_admins: bool = None,
+                          require_email_verification: bool = None,
+                          sidebar: str = None, slur_filter_regex: str = None,
+                          taglines: List[str] = None) -> dict:
         """ create_site: creates a Lemmy instance
 
         Args:
@@ -466,7 +466,7 @@ class LemmyHttp(object):
         return await self._post_handler("/user/delete_account", locals())
 
     async def delete_comment(self, comment_id: int,
-                       deleted: bool) -> dict:
+                             deleted: bool) -> dict:
         """ delete_comment: delete a comment
 
         Args:
@@ -480,7 +480,7 @@ class LemmyHttp(object):
         return await self._post_handler("/comment/delete", locals())
 
     async def delete_community(self, community_id: int,
-                         deleted: bool) -> dict:
+                               deleted: bool) -> dict:
         """ delete_community: delete a community
 
         Args:
@@ -519,7 +519,7 @@ class LemmyHttp(object):
         return await self._post_handler("/post/delete", locals())
 
     async def delete_private_message(self, deleted: bool,
-                               private_message_id: int) -> dict:
+                                     private_message_id: int) -> dict:
         """ delete_private_message: delete a private message
 
         Args:
@@ -533,7 +533,7 @@ class LemmyHttp(object):
         return await self._post_handler("/private_message/delete", locals())
 
     async def distinguish_comment(self, comment_id: int,
-                            distinguished: bool) -> dict:
+                                  distinguished: bool) -> dict:
         """ distinguish_comment: distinguish/highlight a comment
 
         Args:
@@ -547,8 +547,8 @@ class LemmyHttp(object):
         return await self._post_handler("/comment/distinguish", locals())
 
     async def edit_comment(self, comment_id: int, content: str = None,
-                     form_id: str = None, language_id: int = None
-                     ) -> dict:
+                           form_id: str = None, language_id: int = None
+                           ) -> dict:
         """ edit_comment: edit a comment
 
         Args:
@@ -564,11 +564,11 @@ class LemmyHttp(object):
         return await self._put_handler("/comment", locals())
 
     async def edit_community(self, community_id: int, banner: str = None,
-                       description: str = None,
-                       discussion_languages: List[int] = None,
-                       icon: str = None, nsfw: bool = None,
-                       posting_restricted_to_mods: bool = None,
-                       title: str = None) -> dict:
+                             description: str = None,
+                             discussion_languages: List[int] = None,
+                             icon: str = None, nsfw: bool = None,
+                             posting_restricted_to_mods: bool = None,
+                             title: str = None) -> dict:
         """ edit_community: edit a community's information/behavior
 
         Args:
@@ -590,8 +590,8 @@ class LemmyHttp(object):
         return await self._put_handler("/community", locals())
 
     async def edit_custom_emoji(self, alt_text: str, category: str, id: int,
-                          image_url: str, keywords: List[str]
-                          ) -> dict:
+                                image_url: str, keywords: List[str]
+                                ) -> dict:
         """ edit_custom_emoji: edits information for custom emoji
 
         Args:
@@ -608,8 +608,8 @@ class LemmyHttp(object):
         return await self._post_handler("/custom_emoji", locals())
 
     async def edit_post(self, post_id: int, body: str = None,
-                  language_id: int = None, name: str = None, nsfw: bool = None,
-                  url: str = None) -> dict:
+                        language_id: int = None, name: str = None, nsfw: bool = None,
+                        url: str = None) -> dict:
         """ edit_post: edit a post
 
         Args:
@@ -627,7 +627,7 @@ class LemmyHttp(object):
         return await self._put_handler("/post", locals())
 
     async def edit_private_message(self, content: str,
-                             private_message_id: int) -> dict:
+                                   private_message_id: int) -> dict:
         """ edit_private_message: edit a private message
 
         Args:
@@ -641,41 +641,41 @@ class LemmyHttp(object):
         return await self._put_handler("/private_message", locals())
 
     async def edit_site(self, actor_name_max_length: int = None,
-                  allowed_instances: List[str] = None,
-                  application_email_admins: bool = None,
-                  application_question: str = None, banner: str = None,
-                  blocked_instances: List[str] = None,
-                  captcha_difficulty: str = None, captcha_enabled: bool = None,
-                  community_creation_admin_only: bool = None,
-                  default_post_listing_type: str = None,
-                  default_theme: str = None,
-                  description: str = None,
-                  discussion_languages: List[int] = None,
-                  enable_downvotes: bool = None, enable_nsfw: bool = None,
-                  federation_debug: bool = None,
-                  federation_enabled: bool = None,
-                  federation_worker_count: int = None,
-                  hide_modlog_mod_names: bool = None, icon: str = None,
-                  legal_information: str = None,
-                  name: str = None,
-                  private_instance: bool = None,
-                  rate_limit_comment: int = None,
-                  rate_limit_comment_per_second: int = None,
-                  rate_limit_image: int = None,
-                  rate_limit_image_per_second: int = None,
-                  rate_limit_message: int = None,
-                  rate_limit_message_per_second: int = None,
-                  rate_limit_post: int = None,
-                  rate_limit_post_per_second: int = None,
-                  rate_limit_register: int = None,
-                  rate_limit_register_per_second: int = None,
-                  rate_limit_search: int = None,
-                  rate_limit_search_per_second: int = None,
-                  registration_mode: str = None,
-                  reports_email_admins: bool = None,
-                  require_email_verification: bool = None, sidebar: str = None,
-                  slur_filter_regex: str = None,
-                  taglines: List[str] = None) -> dict:
+                        allowed_instances: List[str] = None,
+                        application_email_admins: bool = None,
+                        application_question: str = None, banner: str = None,
+                        blocked_instances: List[str] = None,
+                        captcha_difficulty: str = None, captcha_enabled: bool = None,
+                        community_creation_admin_only: bool = None,
+                        default_post_listing_type: str = None,
+                        default_theme: str = None,
+                        description: str = None,
+                        discussion_languages: List[int] = None,
+                        enable_downvotes: bool = None, enable_nsfw: bool = None,
+                        federation_debug: bool = None,
+                        federation_enabled: bool = None,
+                        federation_worker_count: int = None,
+                        hide_modlog_mod_names: bool = None, icon: str = None,
+                        legal_information: str = None,
+                        name: str = None,
+                        private_instance: bool = None,
+                        rate_limit_comment: int = None,
+                        rate_limit_comment_per_second: int = None,
+                        rate_limit_image: int = None,
+                        rate_limit_image_per_second: int = None,
+                        rate_limit_message: int = None,
+                        rate_limit_message_per_second: int = None,
+                        rate_limit_post: int = None,
+                        rate_limit_post_per_second: int = None,
+                        rate_limit_register: int = None,
+                        rate_limit_register_per_second: int = None,
+                        rate_limit_search: int = None,
+                        rate_limit_search_per_second: int = None,
+                        registration_mode: str = None,
+                        reports_email_admins: bool = None,
+                        require_email_verification: bool = None, sidebar: str = None,
+                        slur_filter_regex: str = None,
+                        taglines: List[str] = None) -> dict:
         """ edit_site: edits a Lemmy instance
 
         Args:
@@ -749,7 +749,7 @@ class LemmyHttp(object):
         return await self._put_handler("/site", locals())
 
     async def feature_post(self, feature_type: str, featured: bool,
-                     post_id: int) -> dict:
+                           post_id: int) -> dict:
         """ feature_post: feature a post
 
         Args:
@@ -764,7 +764,7 @@ class LemmyHttp(object):
         return await self._post_handler("/post/feature", locals())
 
     async def follow_community(self, community_id: int,
-                         follow: bool) -> dict:
+                               follow: bool) -> dict:
         """ follow_community: follow a community
 
         Args:
@@ -808,11 +808,11 @@ class LemmyHttp(object):
         return await self._get_handler("/comment", locals())
 
     async def get_comments(self, community_id: int = None,
-                     community_name: str = None, limit: int = None,
-                     max_depth: int = None, page: int = None,
-                     parent_id: int = None, post_id: int = None,
-                     saved_only: bool = None, sort: str = None,
-                     type_: str = None) -> dict:
+                           community_name: str = None, limit: int = None,
+                           max_depth: int = None, page: int = None,
+                           parent_id: int = None, post_id: int = None,
+                           saved_only: bool = None, sort: str = None,
+                           type_: str = None) -> dict:
         """ get_comments: get a list of comments
 
         Args:
@@ -838,7 +838,7 @@ class LemmyHttp(object):
         return await self._get_handler("/comment/list", locals())
 
     async def get_community(self, id: int = None,
-                      name: str = None) -> dict:
+                            name: str = None) -> dict:
         """ get_community: get a community
 
         Args:
@@ -861,9 +861,9 @@ class LemmyHttp(object):
         return await self._get_handler("/federated_instances")
 
     async def get_modlog(self, type_: str, community_id: int = None,
-                   limit: int = None, mod_person_id: int = None,
-                   other_person_id: int = None,
-                   page: int = None) -> dict:
+                         limit: int = None, mod_person_id: int = None,
+                         other_person_id: int = None,
+                         page: int = None) -> dict:
         """ get_modlog: obtain the moderation log
 
         Args:
@@ -887,9 +887,9 @@ class LemmyHttp(object):
         return await self._get_handler("/modlog", locals())
 
     async def get_person_details(self, community_id: int = None, limit: int = None,
-                           page: int = None, person_id: int = None,
-                           saved_only: bool = None, sort: str = None,
-                           username: str = None) -> dict:
+                                 page: int = None, person_id: int = None,
+                                 saved_only: bool = None, sort: str = None,
+                                 username: str = None) -> dict:
         """ get_person_details: get information for a user
 
         Args:
@@ -911,8 +911,8 @@ class LemmyHttp(object):
         return await self._get_handler("/user", locals())
 
     async def get_person_mentions(self, limit: int = None, page: int = None,
-                            sort: str = None,
-                            unread_only: bool = None) -> dict:
+                                  sort: str = None,
+                                  unread_only: bool = None) -> dict:
         """ get_person_mentions: obtain comments where current user is
         mentioned
 
@@ -930,7 +930,7 @@ class LemmyHttp(object):
         return await self._get_handler("/user/mention", locals())
 
     async def get_post(self, comment_id: int = None,
-                 id: int = None) -> dict:
+                       id: int = None) -> dict:
         """ get_post: get post from post ID or comment ID
 
         Args:
@@ -944,9 +944,9 @@ class LemmyHttp(object):
         return await self._get_handler("/post", locals())
 
     async def get_posts(self, community_id: int = None, community_name: str = None,
-                  limit: int = None, page: int = None, saved_only: bool = None,
-                  sort: str = None,
-                  type_: str = None) -> dict:
+                        limit: int = None, page: int = None, saved_only: bool = None,
+                        sort: str = None,
+                        type_: str = None) -> dict:
         """ get_posts: obtain posts from a community
 
         Args:
@@ -968,7 +968,7 @@ class LemmyHttp(object):
         return await self._get_handler("/post/list", locals())
 
     async def get_private_messages(self, limit: int = None, page: int = None,
-                             unread_only: bool = None) -> dict:
+                                   unread_only: bool = None) -> dict:
         """ get_private_messages: get private messages
 
         Args:
@@ -984,8 +984,8 @@ class LemmyHttp(object):
         return await self._get_handler("/private_message/list", locals())
 
     async def get_replies(self, limit: int = None, page: int = None,
-                    sort: str = None,
-                    unread_only: bool = None) -> dict:
+                          sort: str = None,
+                          unread_only: bool = None) -> dict:
         """ get_replies: get replies for current user
 
         Args:
@@ -1089,8 +1089,8 @@ class LemmyHttp(object):
         return await self._post_handler("/post/like", locals())
 
     async def list_comment_reports(self, community_id: int = None, limit: int = None,
-                             page: int = None, unresolved_only: bool = None
-                             ) -> dict:
+                                   page: int = None, unresolved_only: bool = None
+                                   ) -> dict:
         """ list_comment_reports: return list of comment reports
 
         Args:
@@ -1107,8 +1107,8 @@ class LemmyHttp(object):
         return await self._get_handler("/comment/report/list", locals())
 
     async def list_communities(self, limit: int = None, page: int = None,
-                         sort: str = None,
-                         type_: str = None) -> dict:
+                               sort: str = None,
+                               type_: str = None) -> dict:
         """ list_communities: return list of communities
 
         Args:
@@ -1126,8 +1126,8 @@ class LemmyHttp(object):
         return await self._get_handler("/community/list", locals())
 
     async def list_post_reports(self, community_id: int = None, limit: int = None,
-                          page: int = None, unresolved_only: bool = None
-                          ) -> dict:
+                                page: int = None, unresolved_only: bool = None
+                                ) -> dict:
         """ list_post_reports: return a list of post reports
 
         Args:
@@ -1144,8 +1144,8 @@ class LemmyHttp(object):
         return await self._get_handler("/post/report/list", locals())
 
     async def list_private_message_reports(self, limit: int = None, page: int = None,
-                                     unresolved_only: bool = None
-                                     ) -> dict:
+                                           unresolved_only: bool = None
+                                           ) -> dict:
         """ list_private_message_reports: return a list of private message
         reports
 
@@ -1162,9 +1162,9 @@ class LemmyHttp(object):
         return await self._get_handler("/private_message/report/list", locals())
 
     async def list_registration_applications(self, limit: int = None,
-                                       page: int = None,
-                                       unread_only: bool = None
-                                       ) -> dict:
+                                             page: int = None,
+                                             unread_only: bool = None
+                                             ) -> dict:
         """ list_registration_applications: return a list of registration
         applications
 
@@ -1203,7 +1203,7 @@ class LemmyHttp(object):
         return await self._post_handler("/user/mark_all_as_read")
 
     async def mark_comment_reply_as_read(self, comment_reply_id: int,
-                                   read: bool) -> dict:
+                                         read: bool) -> dict:
         """ mark_comment_reply_as_read: mark a comment reply as read
 
         Args:
@@ -1217,7 +1217,7 @@ class LemmyHttp(object):
         return await self._post_handler("/comment/mark_as_read", locals())
 
     async def mark_person_mention_as_read(self, person_mention_id: int,
-                                    read: bool) -> dict:
+                                          read: bool) -> dict:
         """ mark_person_mention_as_read: mark mention as read
 
         Args:
@@ -1244,7 +1244,7 @@ class LemmyHttp(object):
         return await self._post_handler("/post/mark_as_read", locals())
 
     async def mark_private_message_as_read(self, private_message_id: int,
-                                     read: bool) -> dict:
+                                           read: bool) -> dict:
         """ mark_private_message_as_read: mark a private message as read
 
         Args:
@@ -1258,7 +1258,7 @@ class LemmyHttp(object):
         return await self._post_handler("/private_message/mark_as_read", locals())
 
     async def password_change_after_reset(self, password: str, password_verify: str,
-                                    token: str) -> dict:
+                                          token: str) -> dict:
         """ password_change_after_reset: password change using user token
 
         Args:
@@ -1285,7 +1285,7 @@ class LemmyHttp(object):
         return await self._post_handler("/user/password_reset", locals())
 
     async def purge_comment(self, comment_id: int,
-                      reason: str = None) -> dict:
+                            reason: str = None) -> dict:
         """ purge_comment: purge a comment
 
         Args:
@@ -1299,7 +1299,7 @@ class LemmyHttp(object):
         return await self._post_handler("/admin/purge/comment", locals())
 
     async def purge_community(self, community_id: int,
-                        reason: str = None) -> dict:
+                              reason: str = None) -> dict:
         """ purge_community: purge a community
 
         Args:
@@ -1313,7 +1313,7 @@ class LemmyHttp(object):
         return await self._post_handler("/admin/purge/community", locals())
 
     async def purge_person(self, person_id: int,
-                     reason: str = None) -> dict:
+                           reason: str = None) -> dict:
         """ purge_person: purge a person
 
         Args:
@@ -1327,7 +1327,7 @@ class LemmyHttp(object):
         return await self._post_handler("/admin/purge/person", locals())
 
     async def purge_post(self, post_id: int,
-                   reason: str = None) -> dict:
+                         reason: str = None) -> dict:
         """ purge_post: purge a post
 
         Args:
@@ -1341,9 +1341,9 @@ class LemmyHttp(object):
         return await self._post_handler("/admin/purge/post", locals())
 
     async def register(self, password: str, password_verify: str, show_nsfw: bool,
-                 username: str, answer: str = None, captcha_answer: str = None,
-                 captcha_uuid: str = None, email: str = None,
-                 honeypot: str = None) -> dict:
+                       username: str, answer: str = None, captcha_answer: str = None,
+                       captcha_uuid: str = None, email: str = None,
+                       honeypot: str = None) -> dict:
         """ register: register a new user
 
         Args:
@@ -1378,7 +1378,7 @@ class LemmyHttp(object):
         return resp["jwt"]
 
     async def remove_comment(self, comment_id: int, removed: bool,
-                       reason: str = None) -> dict:
+                             reason: str = None) -> dict:
         """ remove_comment: remove a comment
 
         Args:
@@ -1393,8 +1393,8 @@ class LemmyHttp(object):
         return await self._post_handler("/comment/remove", locals())
 
     async def remove_community(self, community_id: int, removed: bool,
-                         expires: int = None,
-                         reason: str = None) -> dict:
+                               expires: int = None,
+                               reason: str = None) -> dict:
         """ remove_community: remove a community
 
         Args:
@@ -1410,7 +1410,7 @@ class LemmyHttp(object):
         return await self._post_handler("/community/remove", locals())
 
     async def remove_post(self, post_id: int, removed: bool,
-                    reason: str = None) -> dict:
+                          reason: str = None) -> dict:
         """ remove_post: remove a post
 
         Args:
@@ -1425,7 +1425,7 @@ class LemmyHttp(object):
         return await self._post_handler("/post/remove", locals())
 
     async def resolve_comment_report(self, report_id: int,
-                               resolved: bool) -> dict:
+                                     resolved: bool) -> dict:
         """ resolve_comment_report: resolve a comment report
 
         Args:
@@ -1451,7 +1451,7 @@ class LemmyHttp(object):
         return await self._get_handler("/resolve_object", locals())
 
     async def resolve_post_report(self, report_id: int,
-                            resolved: bool) -> dict:
+                                  resolved: bool) -> dict:
         """ resolve_post_report: resolve a post report
 
         Args:
@@ -1465,7 +1465,7 @@ class LemmyHttp(object):
         return await self._put_handler("/post/report/resolve", locals())
 
     async def resolve_private_message_report(self, report_id: int,
-                                       resolved: bool) -> dict:
+                                             resolved: bool) -> dict:
         """ resolve_private_message_report: resolve a private message report
 
         Args:
@@ -1502,21 +1502,21 @@ class LemmyHttp(object):
         return await self._put_handler("/post/save", locals())
 
     async def save_user_settings(self, avatar: str = None, banner: str = None,
-                           bio: str = None, bot_account: bool = None,
-                           default_listing_type: str = None,
-                           default_sort_type: str = None,
-                           discussion_languages: List[int] = None,
-                           display_name: str = None, email: str = None,
-                           interface_language: str = None,
-                           matrix_user_id: str = None,
-                           send_notifications_to_email: bool = None,
-                           show_avatars: bool = None,
-                           show_bot_accounts: bool = None,
-                           show_new_post_notifs: bool = None,
-                           show_nsfw: bool = None,
-                           show_read_posts: bool = None,
-                           show_scores: bool = None,
-                           theme: str = None) -> dict:
+                                 bio: str = None, bot_account: bool = None,
+                                 default_listing_type: str = None,
+                                 default_sort_type: str = None,
+                                 discussion_languages: List[int] = None,
+                                 display_name: str = None, email: str = None,
+                                 interface_language: str = None,
+                                 matrix_user_id: str = None,
+                                 send_notifications_to_email: bool = None,
+                                 show_avatars: bool = None,
+                                 show_bot_accounts: bool = None,
+                                 show_new_post_notifs: bool = None,
+                                 show_nsfw: bool = None,
+                                 show_read_posts: bool = None,
+                                 show_scores: bool = None,
+                                 theme: str = None) -> dict:
         """ save_user_settings: update settings/preferences for currently-
         logged-in user
 
@@ -1557,9 +1557,9 @@ class LemmyHttp(object):
         return await self._put_handler("/user/save_user_settings", locals())
 
     async def search(self, q: str, community_id: int = None,
-               community_name: str = None, creator_id: int = None,
-               limit: int = None, listing_type: str = None, page: int = None,
-               sort: str = None, type_: str = None) -> dict:
+                     community_name: str = None, creator_id: int = None,
+                     limit: int = None, listing_type: str = None, page: int = None,
+                     sort: str = None, type_: str = None) -> dict:
         """ search: search the site/instance
 
         Args:
@@ -1584,7 +1584,7 @@ class LemmyHttp(object):
         return await self._get_handler("/search", locals())
 
     async def transfer_community(self, community_id: int,
-                           person_id: int) -> dict:
+                                 person_id: int) -> dict:
         """ transfer_community: transfer ownership of a community
 
         Args:
@@ -1612,7 +1612,6 @@ class LemmyHttp(object):
 
 class LemmyError(RuntimeError):
     def __init__(self, message: str, error: Optional[str] = None) -> None:
-
         super().__init__(message)
 
         self.error = error
