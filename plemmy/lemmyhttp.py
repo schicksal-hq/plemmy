@@ -1,6 +1,6 @@
 import orjson
 import logging
-from typing import List, Optional
+from typing import List, Optional, Callable, Any
 from aiohttp import ClientSession
 
 API_VERSION = "v3"
@@ -8,13 +8,15 @@ API_VERSION = "v3"
 
 class LemmyHttp(object):
 
-    def __init__(self, client: ClientSession, key: Optional[str]):
+    def __init__(self, client: ClientSession, key: Optional[str],
+                 json_deserialize: Optional[Callable[[str], Any]] = None):
         """ LemmyHttp object: handles all POST, PUT, and GET operations from
         the LemmyHttp API (https://join-lemmy.org/api/classes/LemmyHttp.html)
 
         Args:
             client (ClientSession): aiohttp client session, should have base_url set and headers, optionally.
             key (str): user's auth key
+            de_json (Optional[Callable[[str], Any]]): custom JSON deserialization function, orjson.loads by default
 
         Returns:
             None
@@ -23,6 +25,7 @@ class LemmyHttp(object):
         self.key = key
         self.client = client
         self.logger = logging.getLogger(__name__)
+        self.de_json = json_deserialize if json_deserialize is not None else orjson.loads
 
     async def _fire_request(self, route: str, method: str = "GET", data=Optional[dict],
                             form_in_params=Optional[bool]) -> dict:
@@ -59,14 +62,14 @@ class LemmyHttp(object):
 
             if resp.status != 200:
                 if resp.content_type == 'application/json':
-                    error_resp = await resp.json(loads=orjson.loads)
+                    error_resp = await resp.json(loads=self.de_json)
                     error = error_resp["error"].upper()
 
                     raise LemmyError(f"[{resp.status}] Lemmy API returned {error} exception", error)
                 else:
                     raise LemmyError(f"[{resp.status}] Generic error encountered while trying to {method} {route}")
 
-            return await resp.json(loads=orjson.loads)
+            return await resp.json(loads=self.de_json)
 
     async def _post_handler(self, endpoint: str, data: Optional[dict] = None) -> dict:
         return await self._fire_request(endpoint, "POST", data, False)
