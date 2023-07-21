@@ -53,9 +53,9 @@ class LemmyHttp(object):
 
         async with self.client as http:
             if form_in_params:
-                resp = getattr(http, method)(f"/{API_VERSION}{route}", params=form)
+                resp = await getattr(http, method)(f"/api/{API_VERSION}{route}", params=form)
             else:
-                resp = getattr(http, method)(f"/{API_VERSION}{route}", json=form)
+                resp = await getattr(http, method)(f"/api/{API_VERSION}{route}", json=form)
 
             return (await resp).json(loads=orjson.loads)
 
