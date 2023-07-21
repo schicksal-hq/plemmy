@@ -1,73 +1,111 @@
-# Plemmy-AIO: a Python package for accessing the Lemmy API asynchronously
+# AIOPlemmy: a Python package for accessing the Lemmy API asynchronously
 
-<img src="img/plemmy.png" alt="drawing" width="325"/>
+<center>
+    <img src="img/plemmy.png" alt="drawing" width="325"/>
+</center>
 
 [![GitHub license](https://img.shields.io/badge/license-Apache-blue.svg)](https://raw.githubusercontent.com/tjkessler/plemmy/master/LICENSE.txt)
 
-Plemmy-AIO allows you to interact with any Lemmy instance using Python and the [LemmyHttp API](https://join-lemmy.org/api/classes/LemmyHttp.html).
+AIOPlemmy allows you to interact with any Lemmy instance using Python and the [LemmyHttp API](https://join-lemmy.org/api/classes/LemmyHttp.html).
 
 **WARNING:** Plemmy is still in development and needs testing!
 
 ## Installation ##
 
-For the most up-to-date version of Plemmy, clone and install from the repository:
+For the most up-to-date version of AIOPlemmy, clone and install from the repository:
 
 ```
 git clone https://github.com/schicksal-hq/plemmy-aio
 cd plemmy
-python setup.py install
+pip3 install .
 ```
 
 ## Basic usage ##
 
-Interact with a Lemmy instance using the _LemmyHttp_ object:
++ Interact with a Lemmy instance using the _LemmyHttp_ object:
 
 ```python
-from plemmy import LemmyHttp
+import aiohttp
+import asyncio
+import orjson
+from aioplemmy import LemmyHttp, responses
 
-# create object for Lemmy.ml, log in
-srv = LemmyHttp("https://lemmy.ml")
-srv.login("<username_or_email>", "<password>")
+async def main():
+    # Unlike in original Plemmy, Plemmy-AIO accepts aiohttp session from outside and relies on developer to set
+    # base_url parameter
+    sess = aiohttp.ClientSession(base_url="https://lemmy.ml", json_serialize=lambda x: str(orjson.dumps(x)))
+    lemmy = LemmyHttp(client=sess, key=None) # login anonymously (as guest, no key)
+
+    # The API requests are async :3
+    resp = await lemmy.get_community(name="anime")
+    resp = responses.GetCommunityResponse(resp)
+    print(resp)
+
+asyncio.run(main())
 ```
 
-Access specific communities:
++ Logging in:
 
 ```python
-from plemmy.responses import GetComunityResponse
+import aiohttp
+import asyncio
+import orjson
+from aioplemmy import LemmyHttp, responses
 
-# obtain community, parse JSON
-api_response = srv.get_community(name="Lemmy")
-response = GetCommunityResponse(api_response)
+async def main():
+    sess = aiohttp.ClientSession(base_url="https://lemmy.ml", json_serialize=lambda x: str(orjson.dumps(x)))
+    
+    # Use anonymous access to log in
+    key = await LemmyHttp(client=sess, key=None).login("test@example.org", "j12345678")
+    
+    # And then create the LemmyHttp instance you'll actually use.
+    # Of course, you can (and should) reuse the same aiohttp session.
+    lemmy = LemmyHttp(client=sess, key=key)
 
-# community info
-community = response.community_view.community
-print(community.name)
-print(community.actor_id)
-print(community.id)
+    resp = await lemmy.get_community(name="anime")
+    resp = responses.GetCommunityResponse(resp)
+    print(resp)
 
-# list community moderators
-for person in response.moderators:
-    print(person.moderator.name, person.community.name)
+asyncio.run(main())
 ```
 
-Create a post:
++ Catching errors:
+
 ```python
-from plemmy.responses import PostResponse
+import aiohttp
+import asyncio
+import orjson
+from aioplemmy import LemmyHttp, LemmyError, responses
 
-# create post, parse JSON
-api_response = srv.create_post(community.id, "Test post please ignore", "Body text")
-response = PostResponse(api_response)
+async def main():
+    sess = aiohttp.ClientSession(base_url="https://lemmy.ml", json_serialize=lambda x: str(orjson.dumps(x)))
+    lemmy = LemmyHttp(client=sess, key=None)
 
-# post info
-post = response.post_view.post
-print(post.creator_id)
-print(post.community_id)
-print(post.name)
-print(post.body)
+    try:
+        resp = await lemmy.get_community(name="nonexistingcommunity")
+        resp = responses.GetCommunityResponse(resp)
+        print(resp)
+    except LemmyError as e:
+        # The error code will be in the `error` property
+        # Keep in mind that this property will be set if and only if
+        # the Lemmy API could generate a response.
+        #
+        # Unexpected I/O and HTTP errors will trigger LemmyError, but will 
+        # not set the property.
+        
+        print(e.error) # should print COULDNT_FIND COMMUNITY
+
+asyncio.run(main())
 ```
 
-Full documentation is on its way, but in the meantime check out our source code and some [examples](https://github.com/tjkessler/plemmy/tree/main/examples).
+Full documentation and further API refinements are on their way, but in meantime you should check out source code
+and [examples](https://github.com/tjkessler/plemmy/tree/main/examples) from upstream. The method names are essentially the
+same after all, and you're unlikely to spot any difference if you just pipe LemmyHttp results to Response objects.
+The important differences are:
++ aioplemmy has its LemmyHttp methods all async
++ ...and the methods return objects parsed from JSON response, not response itself
++ ...and methods occasionally throw LemmyError
 
 ## Reporting issues, making contributions, etc. ##
 
-Don't hesitate to report a bug or unexpected results! Want to contribute? Make a pull request. Contact [@tjkessler](https://github.com/tjkessler) with any questions.
+Pull requests and issues are welcome. You're also welcome to submit them to the upstream repository, I will pull the fixes from there :)
