@@ -1,12 +1,10 @@
-# Plemmy: a Python package for accessing the Lemmy API
+# Plemmy-AIO: a Python package for accessing the Lemmy API asynchronously
 
 <img src="img/plemmy.png" alt="drawing" width="325"/>
 
-[![GitHub version](https://badge.fury.io/gh/tjkessler%2Fplemmy.svg)](https://badge.fury.io/gh/tjkessler%2Fplemmy)
-[![PyPI version](https://badge.fury.io/py/plemmy.svg)](https://badge.fury.io/py/plemmy)
 [![GitHub license](https://img.shields.io/badge/license-Apache-blue.svg)](https://raw.githubusercontent.com/tjkessler/plemmy/master/LICENSE.txt)
 
-Plemmy allows you to interact with any Lemmy instance using Python and the [LemmyHttp API](https://join-lemmy.org/api/classes/LemmyHttp.html).
+Plemmy-AIO allows you to interact with any Lemmy instance using Python and the [LemmyHttp API](https://join-lemmy.org/api/classes/LemmyHttp.html).
 
 **WARNING:** Plemmy is still in development and needs testing!
 
@@ -15,15 +13,9 @@ Plemmy allows you to interact with any Lemmy instance using Python and the [Lemm
 For the most up-to-date version of Plemmy, clone and install from the repository:
 
 ```
-git clone https://github.com/tjkessler/plemmy
+git clone https://github.com/schicksal-hq/plemmy-aio
 cd plemmy
 python setup.py install
-```
-
-A PyPI repository is periodically updated:
-
-```
-pip install plemmy
 ```
 
 ## Basic usage ##

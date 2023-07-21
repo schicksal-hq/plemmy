@@ -24,16 +24,19 @@ VERSION = get_version_info()
 
 
 setuptools.setup(
-    name="plemmy",
+    name="plemmy-aio",
     version=VERSION,
     description="Python API for LemmyHttp",
     long_description=get_readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/tjkessler/plemmy",
+    url="https://github.com/schicksal-hq/plemmy",
     author="Travis Kessler",
     author_email="travis.j.kessler@gmail.com",
     license="Apache License 2.0",
     packages=["plemmy"],
-    install_requires=["requests==2.31.0"],
+    install_requires=[
+        "orjson==3.9.2",
+        "aiohttp==3.8.5"
+    ],
     zip_safe=False
 )
