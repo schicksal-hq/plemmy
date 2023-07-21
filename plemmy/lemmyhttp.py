@@ -57,7 +57,16 @@ class LemmyHttp(object):
             else:
                 resp = await getattr(http, method)(f"/api/{API_VERSION}{route}", json=form)
 
-            return (await resp).json(loads=orjson.loads)
+            if resp.status != 200:
+                if resp.content_type == 'application/json':
+                    error_resp = await resp.json(loads=orjson.loads)
+                    error = error_resp["error"].upper()
+
+                    raise LemmyError(f"[{resp.status}] Lemmy API returned {error} exception", error)
+                else:
+                    raise LemmyError(f"[{resp.status}] Generic error encountered while trying to {method} {route}")
+
+            return await resp.json(loads=orjson.loads)
 
     async def _post_handler(self, endpoint: str, data: Optional[dict] = None) -> dict:
         return await self._fire_request(endpoint, "POST", data, False)
@@ -1596,3 +1605,11 @@ class LemmyHttp(object):
         """
 
         return await self._post_handler("/user/verify_email", {"token": token})
+
+
+class LemmyError(RuntimeError):
+    def __init__(self, message: str, error: Optional[str] = None) -> None:
+
+        super().__init__(message)
+
+        self.error = error
