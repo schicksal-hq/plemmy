@@ -1,44 +1,68 @@
+import base64
+from abc import ABC
 from dataclasses import dataclass
+from typing import Optional
+from urllib.parse import urlparse
 
 
 @dataclass
-class AdminPurgeComment:
+class _LemmyObject(ABC):
+    id: int = None
+
+    @property
+    def id_b64_(self) -> str:
+        return base64.urlsafe_b64encode(int.to_bytes(self.id, length=4, byteorder='little', signed=False)).rstrip(b'=A')\
+            .decode("ascii")
+
+    @staticmethod
+    def b64_to_id(id_: str) -> int:
+        id_ = id_.ljust(6, 'A') + '=='
+        return int.from_bytes(base64.urlsafe_b64decode(id_), byteorder='little', signed=False)
+
+@dataclass
+class _InstanceBound(_LemmyObject):
+    actor_id: str = None
+    local: bool = None
+    instance_id: int = None
+
+    @property
+    def instance_domain_(self) -> Optional[str]:
+        return None if self.local else urlparse(self.actor_id).hostname
+
+@dataclass
+class AdminPurgeComment(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/AdminPurgeComment.html"""
 
     admin_person_id: int = None
-    id: int = None
     post_id: int = None
     reason: str = None
     when_: str = None
 
 
 @dataclass
-class AdminPurgeCommunity:
+class AdminPurgeCommunity(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/AdminPurgeCommunity.html"""
 
     admin_person_id: int = None
-    id: int = None
     reason: str = None
     when_: str = None
 
 
 @dataclass
-class AdminPurgePerson:
+class AdminPurgePerson(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/AdminPurgePerson.html"""
 
     admin_person_id: int = None
-    id: int = None
     reason: str = None
     when_: str = None
 
 
 @dataclass
-class AdminPurgePost:
+class AdminPurgePost(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/AdminPurgePost.html"""
 
     admin_person_id: int = None
     community_id: int = None
-    id: int = None
     reason: str = None
     when_: str = None
 
@@ -53,7 +77,7 @@ class CaptchaResponse:
 
 
 @dataclass
-class Comment:
+class Comment(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/Comment.html"""
 
     ap_id: str = None
@@ -61,7 +85,6 @@ class Comment:
     creator_id: int = None
     deleted: bool = None
     distinguished: bool = None
-    id: int = None
     language_id: int = None
     local: bool = None
     path: str = None
@@ -72,37 +95,34 @@ class Comment:
 
 
 @dataclass
-class CommentAggregates:
+class CommentAggregates(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/CommentAggregates.html"""
 
     child_count: int = None
     comment_id: int = None
     downvotes: int = None
     hot_rank: int = None
-    id: int = None
     published: str = None
     score: int = None
     upvotes: int = None
 
 
 @dataclass
-class CommentReply:
+class CommentReply(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/CommentReply.html"""
 
     comment_id: int = None
-    id: int = None
     published: str = None
     read: bool = None
     recipient_id: int = None
 
 
 @dataclass
-class CommentReport:
+class CommentReport(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/CommentReport.html"""
 
     comment_id: int = None
     creator_id: int = None
-    id: int = None
     original_comment_text: str = None
     published: str = None
     reason: str = None
@@ -112,32 +132,27 @@ class CommentReport:
 
 
 @dataclass
-class Community:
+class Community(_InstanceBound):
     """https://join-lemmy.org/api/interfaces/Community.html"""
 
     description: str = None
     icon: str = None
-    id: int = None
     name: str = None
     title: str = None
     removed: bool = None
     published: str = None
     deleted: bool = None
     nsfw: bool = None
-    actor_id: str = None
-    local: bool = None
     hidden: bool = None
     posting_restricted_to_mods: bool = None
-    instance_id: int = None
     updated: str = None
     banner: bool = None
 
 
 @dataclass
-class CommunityAggregates:
+class CommunityAggregates(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/CommunityAggregates.html"""
 
-    id: int = None
     community_id: int = None
     subscribers: int = None
     posts: int = None
@@ -151,12 +166,11 @@ class CommunityAggregates:
 
 
 @dataclass
-class CustomEmoji:
+class CustomEmoji(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/CustomEmoji.html"""
 
     alt_text: str = None
     category: str = None
-    id: int = None
     image_url: str = None
     local_site_id: int = None
     published: str = None
@@ -165,11 +179,10 @@ class CustomEmoji:
 
 
 @dataclass
-class CustomEmojiKeyword:
+class CustomEmojiKeyword(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/CustomEmojiKeyword.html"""
 
     custom_emoji_id: int = None
-    id: int = None
     keyword: str = None
 
 
@@ -182,11 +195,10 @@ class ImageFile:
 
 
 @dataclass
-class Instance:
+class Instance(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/Instance.html"""
 
     domain: str = None
-    id: int = None
     published: str = None
     software: str = None
     updated: str = None
@@ -194,16 +206,15 @@ class Instance:
 
 
 @dataclass
-class Language:
+class Language(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/Language.html"""
 
     code: str = None
-    id: int = None
     name: str = None
 
 
 @dataclass
-class LocalSite:
+class LocalSite(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/LocalSite.html"""
 
     actor_name_max_length: int = None
@@ -218,7 +229,6 @@ class LocalSite:
     enable_nsfw: bool = None
     federation_enabled: bool = None
     hide_modlog_mod_names: bool = None
-    id: int = None
     legal_information: str = None
     private_instance: bool = None
     published: str = None
@@ -232,12 +242,11 @@ class LocalSite:
 
 
 @dataclass
-class LocalSiteRateLimit:
+class LocalSiteRateLimit(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/LocalSiteRateLimit.html"""
 
     comment: int = None
     comment_per_second: int = None
-    id: int = None
     image: int = None
     image_per_second: int = None
     local_site_id: int = None
@@ -254,7 +263,7 @@ class LocalSiteRateLimit:
 
 
 @dataclass
-class LocalUser:
+class LocalUser(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/LocalUser.html"""
 
     accepted_application: bool = None
@@ -262,7 +271,6 @@ class LocalUser:
     default_sort_type: str = None
     email: str = None
     email_verified: bool = None
-    id: int = None
     interface_language: str = None
     open_links_in_new_tab: bool = None
     person_id: int = None
@@ -279,10 +287,9 @@ class LocalUser:
 
 
 @dataclass
-class ModAdd:
+class ModAdd(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModAdd.html"""
 
-    id: int = None
     mod_person_id: int = None
     other_person_id: int = None
     removed: bool = None
@@ -290,11 +297,10 @@ class ModAdd:
 
 
 @dataclass
-class ModAddCommunity:
+class ModAddCommunity(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModAddCommunity.html"""
 
     community_id: int = None
-    id: int = None
     mod_person_id: int = None
     other_person_id: int = None
     removed: bool = None
@@ -302,12 +308,11 @@ class ModAddCommunity:
 
 
 @dataclass
-class ModBan:
+class ModBan(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModBan.html"""
 
     banned: bool = None
     expires: str = None
-    id: int = None
     mod_person_id: int = None
     other_person_id: int = None
     reason: str = None
@@ -315,13 +320,12 @@ class ModBan:
 
 
 @dataclass
-class ModBanFromCommunity:
+class ModBanFromCommunity(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModBanFromCommunity.html"""
 
     banned: bool = None
     community_id: int = None
     expires: str = None
-    id: int = None
     mod_person_id: int = None
     other_person_id: int = None
     reason: str = None
@@ -329,11 +333,10 @@ class ModBanFromCommunity:
 
 
 @dataclass
-class ModFeaturePost:
+class ModFeaturePost(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModFeaturePost.html"""
 
     featured: bool = None
-    id: int = None
     is_featured_community: bool = None
     mod_person_id: int = None
     post_id: int = None
@@ -341,22 +344,20 @@ class ModFeaturePost:
 
 
 @dataclass
-class ModHideCommunity:
+class ModHideCommunity(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModHideCommunity.html"""
 
     community_id: int = None
     hidden: bool = None
-    id: int = None
     mod_person_id: int = None
     reason: str = None
     when_: str = None
 
 
 @dataclass
-class ModLockPost:
+class ModLockPost(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModLockPost.html"""
 
-    id: int = None
     locked: bool = None
     mod_person_id: int = None
     post_id: int = None
@@ -364,11 +365,10 @@ class ModLockPost:
 
 
 @dataclass
-class ModRemoveComment:
+class ModRemoveComment(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModRemoveComment.html"""
 
     comment_id: int = None
-    id: int = None
     mod_person_id: int = None
     removed: bool = None
     reason: str = None
@@ -376,12 +376,11 @@ class ModRemoveComment:
 
 
 @dataclass
-class ModRemoveCommunity:
+class ModRemoveCommunity(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModRemoveCommunity.html"""
 
     community_id: int = None
     expires: str = None
-    id: int = None
     mod_person_id: int = None
     removed: bool = None
     reason: str = None
@@ -389,10 +388,9 @@ class ModRemoveCommunity:
 
 
 @dataclass
-class ModRemovePost:
+class ModRemovePost(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModRemovePost.html"""
 
-    id: int = None
     mod_person_id: int = None
     post_id: int = None
     removed: bool = None
@@ -401,21 +399,19 @@ class ModRemovePost:
 
 
 @dataclass
-class ModTransferCommunity:
+class ModTransferCommunity(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/ModTransferCommunity.html"""
 
     community_id: int = None
-    id: int = None
     mod_person_id: int = None
     other_person_id: int = None
     when_: str = None
 
 
 @dataclass
-class Person:
+class Person(_InstanceBound):
     """https://join-lemmy.org/api/interfaces/Person.html"""
 
-    actor_id: str = None
     admin: bool = None
     avatar: str = None
     ban_expires: str = None
@@ -425,10 +421,7 @@ class Person:
     bot_account: bool = None
     deleted: bool = None
     display_name: str = None
-    id: int = None
     inbox_url: str = None
-    instance_id: int = None
-    local: bool = None
     matrix_user_id: str = None
     name: str = None
     published: str = None
@@ -436,30 +429,28 @@ class Person:
 
 
 @dataclass
-class PersonAggregates:
+class PersonAggregates(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/PersonAggregates.html"""
 
     comment_count: int = None
     comment_score: int = None
-    id: int = None
     person_id: int = None
     post_count: int = None
     post_score: int = None
 
 
 @dataclass
-class PersonMention:
+class PersonMention(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/PersonMention.html"""
 
     comment_id: int = None
-    id: int = None
     published: str = None
     read: bool = None
     recipient_id: int = None
 
 
 @dataclass
-class Post:
+class Post(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/Post.html"""
 
     ap_id: str = None
@@ -472,7 +463,6 @@ class Post:
     embed_video_url: str = None
     featured_community: bool = None
     featured_local: bool = None
-    id: int = None
     language_id: int = None
     local: bool = None
     locked: bool = None
@@ -486,7 +476,7 @@ class Post:
 
 
 @dataclass
-class PostAggregates:
+class PostAggregates(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/PostAggregates.html"""
 
     comments: int = None
@@ -495,7 +485,6 @@ class PostAggregates:
     featured_local: bool = None
     hot_rank: int = None
     hot_rank_active: int = None
-    id: int = None
     newest_comment_time: str = None
     newest_comment_time_necro: str = None
     post_id: int = None
@@ -505,11 +494,10 @@ class PostAggregates:
 
 
 @dataclass
-class PostReport:
+class PostReport(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/PostReport.html"""
 
     creator_id: int = None
-    id: int = None
     original_post_body: str = None
     original_post_name: str = None
     original_post_url: str = None
@@ -522,14 +510,13 @@ class PostReport:
 
 
 @dataclass
-class PrivateMessage:
+class PrivateMessage(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/PrivateMessage.html"""
 
     ap_id: str = None
     content: str = None
     creator_id: int = None
     deleted: bool = None
-    id: int = None
     local: bool = None
     published: str = None
     read: bool = None
@@ -538,11 +525,10 @@ class PrivateMessage:
 
 
 @dataclass
-class PrivateMessageReport:
+class PrivateMessageReport(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/PrivateMessageReport.html"""
 
     creator_id: int = None
-    id: int = None
     original_pm_text: str = None
     private_message_id: int = None
     published: str = None
@@ -553,26 +539,24 @@ class PrivateMessageReport:
 
 
 @dataclass
-class RegistrationApplication:
+class RegistrationApplication(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/RegistrationApplication.html"""
 
     admin_id: int = None
     answer: str = None
     deny_reason: str = None
-    id: int = None
     local_user_id: int = None
     published: str = None
 
 
 @dataclass
-class Site:
+class Site(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/Site.html"""
 
     actor_id: str = None
     banner: str = None
     description: str = None
     icon: str = None
-    id: int = None
     inbox_url: str = None
     instance_id: int = None
     last_refreshed_at: str = None
@@ -585,12 +569,11 @@ class Site:
 
 
 @dataclass
-class SiteAggregates:
+class SiteAggregates(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/SiteAggregates.html"""
 
     comments: int = None
     communities: int = None
-    id: int = None
     posts: int = None
     site_id: int = None
     users: int = None
@@ -611,11 +594,10 @@ class SiteMetadata:
 
 
 @dataclass
-class Tagline:
+class Tagline(_LemmyObject):
     """https://join-lemmy.org/api/interfaces/Tagline.html"""
 
     content: str = None
-    id: int = None
     local_site_id: int = None
     published: str = None
     updated: str = None
