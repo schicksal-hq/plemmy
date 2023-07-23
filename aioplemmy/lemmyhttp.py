@@ -54,22 +54,21 @@ class LemmyHttp(object):
         if self.key is not None:
             form["auth"] = self.key
 
-        async with self.client as http:
-            if form_in_params:
-                resp = await getattr(http, method)(f"/api/{API_VERSION}{route}", params=form)
+        if form_in_params:
+            resp = await getattr(self.client, method)(f"/api/{API_VERSION}{route}", params=form)
+        else:
+            resp = await getattr(self.client, method)(f"/api/{API_VERSION}{route}", json=form)
+
+        if resp.status != 200:
+            if resp.content_type == 'application/json':
+                error_resp = await resp.json(loads=self.de_json)
+                error = error_resp["error"].upper()
+
+                raise LemmyError(f"[{resp.status}] Lemmy API returned {error} exception", error)
             else:
-                resp = await getattr(http, method)(f"/api/{API_VERSION}{route}", json=form)
+                raise LemmyError(f"[{resp.status}] Generic error encountered while trying to {method} {route}")
 
-            if resp.status != 200:
-                if resp.content_type == 'application/json':
-                    error_resp = await resp.json(loads=self.de_json)
-                    error = error_resp["error"].upper()
-
-                    raise LemmyError(f"[{resp.status}] Lemmy API returned {error} exception", error)
-                else:
-                    raise LemmyError(f"[{resp.status}] Generic error encountered while trying to {method} {route}")
-
-            return await resp.json(loads=self.de_json)
+        return await resp.json(loads=self.de_json)
 
     async def _post_handler(self, endpoint: str, data: Optional[dict] = None) -> dict:
         return await self._fire_request(endpoint, "POST", data, False)
