@@ -66,7 +66,14 @@ class LemmyHttp(object):
 
                 raise LemmyError(f"[{resp.status}] Lemmy API returned {error} exception", error)
             else:
-                raise LemmyError(f"[{resp.status}] Generic error encountered while trying to {method} {route}")
+                maybe_error = (await resp.text())
+                if maybe_error is None:
+                    maybe_error = "Unknown error"
+                else:
+                    maybe_error = maybe_error.upper()
+
+                raise LemmyError(
+                    f"[{resp.status}] Generic error encountered while trying to {method} {route}: {maybe_error}")
 
         return await resp.json(loads=self.de_json)
 
